@@ -17,5 +17,6 @@ def position(num_mass):
             pos[i][2] = 0.1
     return pos
 
+def a():
+    print("XZL is a sb")
 
-print(position(8))
