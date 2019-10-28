@@ -1,6 +1,8 @@
 import numpy as np
 from numba import jit, njit
 import time
+from OpenGL.GL import *
+from OpenGL.GLU import *
 
 # Parameters
 springs = {}
@@ -44,6 +46,10 @@ def init_cube():
             # print(k, springs[k].cnn1, springs[k].cnn2)
             k += 1
 
+
+init_cube()
+
+def Cube():
 
 
 
