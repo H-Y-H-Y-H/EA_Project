@@ -601,13 +601,15 @@ void mutation(int choose){
     else{
 //        cout<< "the shape of leg will be changed a little bit randomly."<<endl;
         for (int i = 4; i<11;i++)
-            if (shape_gens[choose][i][1] != 0 and shape_gens[choose][i][2] != 0){
-                double direction1 = ((rand()%2)-1 ) * 0.01;
-                double direction2 = ((rand()%2)-1 ) * 0.01;
-                shape_gens[choose][i][1] += direction1;
-                shape_gens[choose][i+8][1] += direction2;
-                shape_gens[choose][i][2] += direction1;
-                shape_gens[choose][i+8][2] += direction2;
+            if (shape_gens[choose][i][1] > -0.02 and shape_gens[choose][i][2] > 0){
+                double direction1 = ((rand()%3)-1 ) * 0.01;
+                double direction2 = ((rand()%3)-1 ) * 0.01;
+                if(shape_gens[choose][i][1] <0.4 and shape_gens[choose][i][2] <0.4) {
+                    shape_gens[choose][i][1] += direction1;
+                    shape_gens[choose][i + 8][1] += direction1;
+                    shape_gens[choose][i][2] += direction2;
+                    shape_gens[choose][i + 8][2] += direction2;
+                }
             }
 
     }
