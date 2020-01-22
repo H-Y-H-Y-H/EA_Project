@@ -692,8 +692,7 @@ int main(){
 //        cout<<"GENERATION:"<<i<<endl;
         for(int j = 0; j< cycle; j++){
 
-            physic();
-            moveit();
+
             t+=delta_t;
 
             if (j%7000 ==0){
@@ -703,6 +702,8 @@ int main(){
                 catcher+=1;
 //                cout<<"t:"<<t<<"; catcher"<<endl;
             }
+            physic();
+            moveit();
         }
         get_fitness();
         for (auto & j : fitness_cut) {
