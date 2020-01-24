@@ -275,7 +275,7 @@ void create(int start, int end){
 
         for (int k = 0; k<cre_num_dots_f; k++){
             double i2y = rand()%2500 * 0.0001 - 0.1; // 1500~7000 -> 0.15~0.4
-            double i2z = rand()%2000 * 0.0001; // 0~2000 -> 0~0.2
+            double i2z = rand()%4000 * 0.0001; // 0~2000 -> 0~0.2
 
             shape_gens[i][8+k][0] = 0;
             shape_gens[i][16+k][0] = bdy_w;
@@ -632,8 +632,7 @@ int main(){
 //        cout<<"GENERATION:"<<i<<endl;
         for(int j = 0; j< cycle; j++){
 
-            physic();
-            moveit();
+
             t+=delta_t;
 
             if (j%7000 ==0){
@@ -643,6 +642,8 @@ int main(){
                 catcher+=1;
 //                cout<<"t:"<<t<<"; catcher"<<endl;
             }
+            physic();
+            moveit();
         }
         get_fitness();
         for (auto & j : fitness_cut) {
@@ -664,7 +665,7 @@ int main(){
     result();
 
     std::ofstream outfile;
-    outfile.open("C:\\Users\\yh3187\\Desktop\\EA_Project\\all_individuals.txt", std::ios_base::app);
+    outfile.open("C:\\Users\\yh3187\\CLionProjects\\Open_plan\\all_individuals.txt", std::ios_base::app);
     for (int tg = 0; tg< generation; tg++){
         for (int al = 0; al< pop_robot; al++) {
             outfile <<data[tg][al]<<endl;
@@ -672,6 +673,7 @@ int main(){
     }
     return 0;
 }
+
 
 
 double linalg_norm(double a,double b,double c){
