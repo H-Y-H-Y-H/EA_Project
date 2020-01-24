@@ -511,109 +511,51 @@ void get_fitness(){
 }
 
 void crossover(int choose){
-
-    // parents are chosen from good individuals.
-    int parent1 = rand()%(pop_robot);
-    int parent2 = rand()%(pop_robot);
-
-//     cout<<"MATE:"<<parent1<<"and"<<parent2<<endl;
-    // Here is the actuator gens inherit.
-
-    if (rand()%2 == 0) {
-        for (int i = 0; i < 8; i++) {
-            gen_pop[choose][i] = gen_pop[parent1][i];
-//            cout<<"actuator gens inherit: "<<parent1<<" to "<<choose<<endl;
-        }
-    }
-    else{
-        for (int i = 0; i<8; i++){
-            gen_pop[choose][i] = gen_pop[parent2][i];
-//            cout<<"actuator gens inherit: "<<parent2<<" to "<<choose<<endl;
+    int other = rand()%(pop_robot);
+    for (int i = 0; i<8;i++){
+        if (rand()%2 ==0){
+//            cout<<"crossover:"<<choose<<"and"<<other<<",gen"<<i<<endl;
+            gen_pop[choose][i] = gen_pop[other][i];
         }
     }
 
-
-//  the hint leg comes from parent1, the front leg comes from parent2.
-    for(int i = 4; i < 8; i++) {
+    int coin = rand()%2;
+    for(int i = coin*4+4; i<coin*4+8; i++) {
         for (int j = 0; j<3; j++) {
-//            hint leg from one parent
-            shape_gens[choose][i][j] = shape_gens[parent1][i][j];
-            shape_gens[choose][i+8][j] = shape_gens[parent1][i+8][j];
-//            front leg from the other parent
-            shape_gens[choose][i+4][j] = shape_gens[parent2][i+4][j];
-            shape_gens[choose][i+12][j] = shape_gens[parent2][i+12][j];
+            shape_gens[choose][i][j] = shape_gens[other][i][j];
+            shape_gens[choose][i+8][j] = shape_gens[other][i+8][j];
         }
     }
 
     for (int j = 0; j<3; j++) {
-//        hint leg ground points
-        shape_gens[choose][0][j] = shape_gens[parent1][0][j];
-        shape_gens[choose][2][j] = shape_gens[parent1][2][j];
-//        front leg
-        shape_gens[choose][1][j] = shape_gens[parent2][1][j];
-        shape_gens[choose][3][j] = shape_gens[parent2][3][j];
+        shape_gens[choose][coin][j] = shape_gens[other][coin][j];
+        shape_gens[choose][coin+2][j] = shape_gens[other][coin+2][j];
     }
 
-
-    //leg_genres: the connection of leg masses
+    //leg_genres
     for (int j = 0; j < 10; j++){
         for (int k = 0; k < 2; k++){
-            legs_gens[choose][j+20+0][k] = legs_gens[parent1][j+20+0][k];
-            legs_gens[choose][j+20+10][k] = legs_gens[parent2][j+20+10][k];
+            legs_gens[choose][j+20+coin*10][k] = legs_gens[other][j+20+coin*10][k];
         }
         for (int k = 0; k < 2; k++){
-            legs_gens[choose][j+0][k] = legs_gens[parent1][j+0][k];
-            legs_gens[choose][j+10][k] = legs_gens[parent2][j+10][k];
+            legs_gens[choose][j+coin*10][k] = legs_gens[other][j+coin*10][k];
         }
     }
 
-//    cout<<"the hint leg comes from "<<parent1<<", the front leg comes from "<<parent2<<endl;
+
 }
 
 void mutation(int choose){
+    for (int i = 0; i<8;i++){
 
-    if (rand()%2 == 0){
-//        cout<< "muscle actuator will be changed."<<endl;
-        for (int i = 0; i<8;i++){
-            if (i ==2 or i ==3) {
-                if (rand()% 3 == 0) {
-                    gen_pop[choose][i] = gen_pop[choose][i] + 0.0001;
-//                    cout<<"1+++"<<endl;
-                }
-                if (rand() % 3 == 1) {
-                    //            cout << "mutation_gen:" << i <<"divide"<< endl;
-                    gen_pop[choose][i] = gen_pop[choose][i] - 0.0001;
-//                    cout<<"1----"<<endl;
-                }
-            }
-            else{
-                if (rand()% 3 == 0) {
-                    gen_pop[choose][i] = gen_pop[choose][i]+5;
-                }
-                if (rand()%3 == 1){
-//                    cout << "mutation_gen:" << i <<"divide"<< endl;
-                    gen_pop[choose][i] = gen_pop[choose][i]-4;
-                }
-            }
+        if (rand()%2 == 0) {
+            gen_pop[choose][i] = gen_pop[choose][i]*2;
+        }
+        else{
+//            cout << "mutation_gen:" << i <<"divide"<< endl;
+            gen_pop[choose][i] = gen_pop[choose][i]/2;
         }
     }
-
-    else{
-//        cout<< "the shape of leg will be changed a little bit randomly."<<endl;
-        for (int i = 4; i<11;i++)
-            if (shape_gens[choose][i][1] != 0 and shape_gens[choose][i][2] != 0){
-                double direction1 = ((rand()%2)-1 ) * 0.01;
-                double direction2 = ((rand()%2)-1 ) * 0.01;
-                shape_gens[choose][i][1] += direction1;
-                shape_gens[choose][i+8][1] += direction2;
-                shape_gens[choose][i][2] += direction1;
-                shape_gens[choose][i+8][2] += direction2;
-            }
-
-    }
-
-
-
 }
 
 void evolution(){
