@@ -513,9 +513,17 @@ void get_fitness(){
 void crossover(int choose){
 
     // parents are chosen from good individuals.
-    int parent1 = rand()%(pop_robot);
-    int parent2 = rand()%(pop_robot);
-
+    int n = pop_robot*selection_rate;
+    int parent1 = 0;
+    int parent2 = 0;
+    if (rand()%2 == 0) {
+        parent1 = rand() % (n);
+        parent2 = rand() % (pop_robot);
+    }
+    else{
+        parent2 = rand() % (n);
+        parent1 = rand() % (pop_robot);
+    }
 //     cout<<"MATE:"<<parent1<<"and"<<parent2<<endl;
     // Here is the actuator gens inherit.
 
@@ -577,22 +585,22 @@ void mutation(int choose){
         for (int i = 0; i<8;i++){
             if (i ==2 or i ==3) {
                 if (rand()% 3 == 0) {
-                    gen_pop[choose][i] = gen_pop[choose][i] + 0.0001;
+                    gen_pop[choose][i] = gen_pop[choose][i] + (rand()%10)*0.0001;
 //                    cout<<"1+++"<<endl;
                 }
                 if (rand() % 3 == 1) {
                     //            cout << "mutation_gen:" << i <<"divide"<< endl;
-                    gen_pop[choose][i] = gen_pop[choose][i] - 0.0001;
+                    gen_pop[choose][i] = gen_pop[choose][i] - (rand()%10)*0.0001;
 //                    cout<<"1----"<<endl;
                 }
             }
             else{
                 if (rand()% 3 == 0) {
-                    gen_pop[choose][i] = gen_pop[choose][i]+5;
+                    gen_pop[choose][i] = gen_pop[choose][i]+(rand()%10);
                 }
                 if (rand()%3 == 1){
-//                    cout << "mutation_gen:" << i <<"divide"<< endl;
-                    gen_pop[choose][i] = gen_pop[choose][i]-4;
+
+                    gen_pop[choose][i] = gen_pop[choose][i]-(rand()%10);
                 }
             }
         }
@@ -602,8 +610,8 @@ void mutation(int choose){
 //        cout<< "the shape of leg will be changed a little bit randomly."<<endl;
         for (int i = 4; i<11;i++)
             if (shape_gens[choose][i][1] > -0.02 and shape_gens[choose][i][2] > 0){
-                double direction1 = ((rand()%3)-1 ) * 0.01;
-                double direction2 = ((rand()%3)-1 ) * 0.01;
+                double direction1 = ((rand()%11)-5 ) * 0.005;
+                double direction2 = ((rand()%11)-5 ) * 0.005;
                 if(shape_gens[choose][i][1] <0.4 and shape_gens[choose][i][2] <0.4) {
                     shape_gens[choose][i][1] += direction1;
                     shape_gens[choose][i + 8][1] += direction1;
@@ -692,7 +700,8 @@ int main(){
 //        cout<<"GENERATION:"<<i<<endl;
         for(int j = 0; j< cycle; j++){
 
-
+            physic();
+            moveit();
             t+=delta_t;
 
             if (j%7000 ==0){
@@ -702,8 +711,6 @@ int main(){
                 catcher+=1;
 //                cout<<"t:"<<t<<"; catcher"<<endl;
             }
-            physic();
-            moveit();
         }
         get_fitness();
         for (auto & j : fitness_cut) {
