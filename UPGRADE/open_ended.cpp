@@ -33,7 +33,7 @@ double damping = 0.999;           // Velocity dampening
 double init_high =0;             // initial height
 double spring_f[3] = {0,0,0};
 /*  Robot Parameters  */
-int cycle = 5 *10000;  // Cycles for every generation
+int cycle = 4 *10000;  // Cycles for every generation
 double w = 2 * pi;                // Frequency parameter w
 double k_hard = 1000000;          // k value of hard spring fixing the shape
 double bdy_l = 0.3;               // the length of robot
@@ -732,7 +732,7 @@ int main(){
     result();
 
     std::ofstream outfile;
-    outfile.open("C:\\Users\\yh3187\\Desktop\\EA_Project\\all_individuals.txt", std::ios_base::app);
+    outfile.open("C:\\Users\\yh3187\\CLionProjects\\Open_plan\\all_individuals.txt", std::ios_base::app);
     for (int tg = 0; tg< generation; tg++){
         for (int al = 0; al< pop_robot; al++) {
             outfile <<data[tg][al]<<endl;
